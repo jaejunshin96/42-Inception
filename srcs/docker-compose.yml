@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    volumes:
+      - ./requirements/nginx:/usr/src/app
+    ports:
+      - 443:443
