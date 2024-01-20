@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:buster
 
 RUN apt-get update
 RUN apt-get install -y nginx \
@@ -11,7 +11,7 @@ RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
        -subj "/C=AU/ST=SA/L=Adelaide/O=42 School/OU=jaeshin/CN=jaeshin/"
 RUN mkdir -p /run/nginx
 
-COPY ./tools/nginx.conf /etc/nginx/conf.d
+COPY ./conf/nginx.conf /etc/nginx/conf.d
 COPY ./tools/ /usr/share/nginx/html/
 
 EXPOSE 443

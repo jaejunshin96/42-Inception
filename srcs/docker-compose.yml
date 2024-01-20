@@ -1,10 +1,40 @@
 version: '3'
 
+networks:
+  network:
+
 services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
     volumes:
-      - ./requirements/nginx:/usr/src/app
+      - ./requirements/nginx:/var/www/html
     ports:
       - 443:443
+    networks:
+      - network
+    restart: always
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    volumes:
+      - ./requirements/nginx:/var/www/html
+    networks:
+      - network
+    env_file:
+      - .env
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb
+    volumes:
+      - ./requirements/nginx:/var/www/html
+    networks:
+      - network
+    env_file:
+      - .env
+    restart: always
