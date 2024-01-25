@@ -1,7 +1,16 @@
 FROM debian:bookworm
 
-RUN apt-get update && apt-get install -y \
-    mariadb-server \
-    && rm -f /var/lib/apt/list/*
+RUN apt -y update && apt -y upgrade
+RUN apt install -y 	mariadb-server \
+			vim \
+			procps
 
-EXPOSE 3306
+RUN mkdir -p /home/jaejun/data/database/
+
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
+COPY ./tools/mariadb.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/mariadb.sh
+ENTRYPOINT ["/usr/local/bin/mariadb.sh"]
+
+CMD ["mysqld_safe"]

@@ -1,19 +1,19 @@
-FROM debian:buster
+FROM debian:bookworm
 
-RUN apt-get update
-RUN apt-get install -y nginx \
-                openssl
+RUN apt -y update && apt -y upgrade
+RUN apt install -y 	nginx \
+			openssl \
+			procps \
+			vim
 
-RUN mkdir /etc/nginx/ssl
-RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-       -out /etc/nginx/ssl/jaeshin.crt \
-       -keyout /etc/nginx/ssl/jaeshin.key \
-       -subj "/C=AU/ST=SA/L=Adelaide/O=42 School/OU=jaeshin/CN=jaeshin/"
-RUN mkdir -p /run/nginx
+RUN mkdir -p /etc/nginx/ssl/
+RUN mkdir -p /var/www/html/wordpress
 
-COPY ./conf/nginx.conf /etc/nginx/conf.d
-COPY ./tools/ /usr/share/nginx/html/
+RUN chmod 755 -R /var/www/html/
+RUN chown -R www-data:www-data /var/www/html/
 
-EXPOSE 443
+COPY ./conf/default.conf /etc/nginx/conf.d/default.conf
+COPY ./tools/nginx.sh /usr/local/bin/
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN chmod +x /usr/local/bin/nginx.sh
+CMD ["/usr/local/bin/nginx.sh"]
