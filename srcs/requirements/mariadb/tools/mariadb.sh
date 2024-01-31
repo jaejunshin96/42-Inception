@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "[.] Starting MySQL Service"
 service mysql start
 
@@ -13,7 +12,7 @@ GRANT ALL ON $DATABASE_NAME.* TO '$DATABASE_USER'@'localhost' IDENTIFIED BY '$DA
 FLUSH PRIVILEGES;
 USE $DATABASE_NAME;
 CREATE TABLE info (name VARCHAR(255), level INT);
-INSERT INTO info (name, level) VALUES ('amait-ou', 6);
+INSERT INTO info (name, level) VALUES ('jaeshin', 6);
 EOF
 
 echo "[.] Running MySQL Instructions ..."

@@ -1,11 +1,9 @@
-FROM debian:bookworm
+FROM debian:buster
 
-RUN apt -y update && apt -y upgrade
-RUN apt install -y 	mariadb-server \
-			vim \
-			procps
-
-RUN mkdir -p /home/jaejun/data/database/
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get install -y 	mariadb-server \
+						vim \
+						procps
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 

@@ -1,87 +1,76 @@
-# Set the version
-version: '3'
+version: '3.8'
 
-# Create a newtork under the name of "inception"
+# Network
 networks:
     inception:
-        name: $NETWORK_NAME
         driver: bridge
 
-# Create Volumes
+# Volumes
 volumes:
     mariadb:
+        name: mariadb
+        driver: local
         driver_opts:
             type: none
+            device: /home/jaejun/data/mysql
             o: bind
-            device: $MARIADB_VOLUME_PATH
-        name: $MARIADB_VOLUME_NAME
-    
-    wordpress:
-        driver_opts:
-            type: none
-            o: bind
-            device: $WORDPRESS_VOLUME_PATH
-        name: $WORDPRESS_VOLUME_NAME
 
-# Define services (nginx, worpdress, mariadb)
+    wordpress:
+        name: wordrpess
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/jaejun/data/wordpress
+            o: bind
+
+
+# Services
 services:
-    # nginx
     nginx:
-        expose:
-            - $NGINX_PORT
-        container_name: $NGINX_NAME
-        build:
-            context: ./requirements/nginx/.
-        stdin_open: true
-        tty: true
+        container_name: nginx
+        build: ./requirements/nginx
+        restart: always
         ports:
-            - $NGINX_PORT:$NGINX_PORT
-        restart: on-failure
+            - 443:443
         networks:
-            - $NETWORK_NAME
+            - inception
         depends_on:
-            - $WORDPRESS_NAME
+            - wordpress
         env_file:
             - .env
-        volumes:
+        volumes: 
             - wordpress:/var/www/html/
+        expose:
+            - 443
 
-    # mariadb
     mariadb:
-        expose:
-            - $MARIADB_PORT
-        container_name: $MARIADB_NAME
-        stdin_open: true
-        tty: true
+        container_name: mariadb
+        build: ./requirements/mariadb
+        restart: always
         ports:
-            - $MARIADB_PORT:$MARIADB_PORT
-        restart: on-failure
+            - 3306:3306
         networks:
-            - $NETWORK_NAME
+            - inception
         env_file:
             - .env
-        volumes:
+        volumes: 
             - mariadb:/var/lib/mysql
-        build:
-            context: ./requirements/mariadb/.
-    
-    # wordpress
-    wordpress:
         expose:
-            - $WORDPRESS_PORT
-        container_name: $WORDPRESS_NAME
-        stdin_open: true
-        tty: true
-        restart: on-failure
+            - 3306
+    
+    wordpress:
+        container_name: wordpress
+        build: ./requirements/wordpress
+        restart: always
         ports:
-            - $WORDPRESS_PORT:$WORDPRESS_PORT
+            - 9000:9000
+        depends_on:
+            - mariadb
         networks:
-            - $NETWORK_NAME
+            - inception
         env_file:
             - .env
-        volumes:
+        volumes: 
             - wordpress:/var/www/html/
-        build:
-            context: ./requirements/wordpress/.
-        depends_on:
-            - $MARIADB_NAME
+        expose:
+            - 9000
