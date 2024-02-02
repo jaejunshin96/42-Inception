@@ -23,7 +23,6 @@ volumes:
             device: /home/jaejun/data/wordpress
             o: bind
 
-
 # Services
 services:
     nginx:

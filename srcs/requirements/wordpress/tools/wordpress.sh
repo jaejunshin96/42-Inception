@@ -43,4 +43,6 @@ wp user create		--allow-root \
 					--role=$WORDPRESS_SUB_ROLE \
 					--user_pass=$WORDPRESS_SUB_PASSWORD
 
+echo "Ready to go"
+
 exec "$@"
