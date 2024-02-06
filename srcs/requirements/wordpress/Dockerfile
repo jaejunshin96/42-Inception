@@ -2,12 +2,10 @@ FROM debian:buster
 
 RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install -y  wget \
-                        vim \
-                        php-fpm \
-                        php-mysql \
-                        sendmail \
+                        php7.3-fpm \
+                        php7.3-mysql \
                         mariadb-client
-                    
+
 COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d
 
 RUN mkdir -p /run/php/

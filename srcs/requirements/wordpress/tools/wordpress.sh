@@ -31,7 +31,7 @@ wp config create	--allow-root \
 					--path='/var/www/html/wordpress/'
 
 wp core install		--allow-root \
-					--url=$WORDPRESS_URL \
+					--url=$DOMAIN_NAME \
 					--title=$WORDPRESS_TITLE \
 					--admin_user=$WORDPRESS_ADMIN_USER \
 					--admin_password=$WORDPRESS_ADMIN_PASSWORD \
