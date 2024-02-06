@@ -1,8 +1,8 @@
 #!/bin/bash
-echo "[.] Starting MySQL Service"
+# Starting MySQL Service
 service mysql start
 
-echo "[.] Writing MySQL Instructions"
+# Writing MySQL Instructions
 cat << EOF > mariadb.sql
 GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$DATABASE_ROOT_PASSWORD';
 FLUSH PRIVILEGES;
@@ -15,11 +15,11 @@ CREATE TABLE info (name VARCHAR(255), level INT);
 INSERT INTO info (name, level) VALUES ('jaeshin', 6);
 EOF
 
-echo "[.] Running MySQL Instructions ..."
+# Running MySQL Instructions
 mysql -u root < mariadb.sql
 
-echo "[.] Stoping MySQL Service ..."
+# Stoping MySQL Service
 service mysql stop
 
-echo "[.] Running MySQL Daemon ..."
+# Running MySQL Daemon
 exec $@
