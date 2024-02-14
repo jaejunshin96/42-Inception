@@ -8,9 +8,9 @@ clean:
 	@docker volume rm $$(docker volume ls -q);
 	@echo "Clean volumes.";
 
-fclean: clean
-	@sudo rm -rf /home/jaejun/data/mysql/*;
-	@sudo rm -rf /home/jaejun/data/wordpress/*;
+fclean: down clean
+	@sudo rm -rf /home/jaeshin/data/mysql/*;
+	@sudo rm -rf /home/jaeshin/data/wordpress/*;
 	@echo "Fclean volumes and data";
 
 re: fclean all
