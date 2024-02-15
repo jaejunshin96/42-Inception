@@ -3,6 +3,7 @@ version: '3.8'
 # Network
 networks:
     inception:
+        name: inception
         driver: bridge
 
 # Volumes
